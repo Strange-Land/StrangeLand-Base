@@ -26,7 +26,7 @@ public class StartServerClientGUI : MonoBehaviour {
 #if UNITY_EDITOR || UNITY_STANDALONE
 
 
-        if (ServerStartGUI == null) return;
+        if (!ServerStartGUI) return;
         ServerGuiInstance = Instantiate(ServerStartGUI).transform;
 
         SessionName = ServerGuiInstance.Find("HostPanel/PairName")?.GetComponent<InputField>().textComponent;
