@@ -1,17 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+/// https://github.com/Strange-Land/StrangeLand-Base/issues/3
+/// https://github.com/Strange-Land/StrangeLand-Base/issues/5
 using UnityEngine;
-using Rerun;
+
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(RerunPlaybackCameraManager))]
-public class OberserverCameraLocalServerObject : MonoBehaviour {
-    private RerunPlaybackCameraManager _RerunCameraManager;
+#if USING_RERUN
+using Rerun;
+#endif
 
+#if USING_RERUN
+[RequireComponent(typeof(RerunPlaybackCameraManager))]
+#endif
+
+public class OberserverCameraLocalServerObject : MonoBehaviour {
+#if USING_RERUN
+    private RerunPlaybackCameraManager _RerunCameraManager;
+#endif
     // Start is called before the first frame update
     void Start() {
+#if USING_RERUN
         _RerunCameraManager = GetComponent<RerunPlaybackCameraManager>();
+#endif
+
         Debug.Log("ObserverCamera Manger ");
         ConnectionAndSpawning.Singleton.ServerStateChange += CameraUpdateStateTracker;
     }
@@ -77,10 +88,15 @@ public class OberserverCameraLocalServerObject : MonoBehaviour {
     }
 
     private void DelinkCameras() {
+#if USING_RERUN
         _RerunCameraManager.DeLinkCameras();
+#endif
+
     }
 
     private void LinkCameras() {
+#if USING_RERUN
         _RerunCameraManager.LinkCameras();
+#endif
     }
 }

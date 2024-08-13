@@ -76,6 +76,7 @@ PlayerSettings:
   androidMinimumWindowWidth: 400
   androidMinimumWindowHeight: 300
   androidFullscreenMode: 1
+  androidAutoRotationBehavior: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 1
@@ -136,6 +137,8 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
+  visionOSBundleVersion: 1.0
+  tvOSBundleVersion: 1.0
   bundleVersion: 0.9.4(Alpha)
   preloadedAssets:
   - {fileID: 4778306584232404464, guid: ab8159e9d92b52349b1b272d1c4d1b60, type: 3}
@@ -239,6 +242,7 @@ PlayerSettings:
   iOSMetalForceHardShadows: 0
   metalEditorSupport: 1
   metalAPIValidation: 1
+  metalCompileShaderBinary: 0
   iOSRenderExtraFrameOnPause: 0
   iosCopyPluginsCodeInsteadOfSymlink: 0
   appleDeveloperTeamID: 
@@ -687,7 +691,7 @@ PlayerSettings:
     PS5: UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
     Server: UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
     Stadia: UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
-    Standalone: USING_ZED;USE_INPUT_SYSTEM_POSE_CONTROL;UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
+    Standalone: USING_ZED;USE_INPUT_SYSTEM_POSE_CONTROL;UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP;USING_RERUN_NO
     WebGL: UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
     Windows Store Apps: USE_INPUT_SYSTEM_POSE_CONTROL;UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
     XboxOne: UNITY_MP_TOOLS_NET_STATS_MONITOR_DISABLED_IN_DEVELOP
@@ -748,6 +752,7 @@ PlayerSettings:
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
+  syncCapabilities: 0
   platformCapabilities: {}
   metroTargetDeviceFamilies: {}
   metroFTAName: 

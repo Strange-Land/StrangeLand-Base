@@ -1,9 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UltimateReplay;
+
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+
+#if USING_RERUN
+using UltimateReplay;
+#endif
+
 
 public class SkeletonNetworkScript : NetworkBehaviour
 {
@@ -13,19 +15,20 @@ public class SkeletonNetworkScript : NetworkBehaviour
         Debug.Log("About to destroy client irrelevant objects!");
         if (IsServer) { }
         else {
+#if USING_RERUN
             GetComponentInParent<ReplayObject>().enabled = false;
             foreach (var t in GetComponentsInChildren<ReplayTransform>()) {
                 t.enabled = false;
                 
             }
+#endif
+
             GetComponentInChildren<BoxCollider>().enabled = false;
-            Debug.Log("OkDoneWithThat!");
         }
     }
 
     public override void OnNetworkDespawn() {
         base.OnNetworkDespawn();
-       
         
     }
 }

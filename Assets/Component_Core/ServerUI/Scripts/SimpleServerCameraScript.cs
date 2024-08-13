@@ -3,12 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Rerun;
+
 using Unity.Netcode;
 using UnityEngine;
 using Application = UnityEngine.Application;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
+
+
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/3
+using Rerun;
+#endif
 
 public class SimpleServerCameraScript : MonoBehaviour
 {
@@ -80,11 +85,15 @@ public class SimpleServerCameraScript : MonoBehaviour
         }
     }
 
-
+#if USING_RERUN
     private Dictionary<RerunCameraIdentifier.CameraNumber, RerunCameraIdentifier> m_Cameras;
+#endif
 
+    
+    
     private void setupCameras()
     {
+#if USING_RERUN
         var r = FindObjectOfType<RerunPlaybackCameraManager>();
         Debug.Log(r.enabled);
         if (r != null)
@@ -111,6 +120,8 @@ public class SimpleServerCameraScript : MonoBehaviour
                 m_Cameras.Add(v.myNumber, v);
             }
         }
+#endif
+
     }
     private void StartingAsServer()
     {
@@ -126,10 +137,13 @@ public class SimpleServerCameraScript : MonoBehaviour
 
     private void DelinkCameras()
     {
+#if USING_RERUN
         foreach (RerunCameraIdentifier cam in m_Cameras.Values)
         {
             cam.DelinkFollowTransforms();
         }
+#endif
+
     }
 
     private void LinkCameras()
@@ -142,13 +156,16 @@ public class SimpleServerCameraScript : MonoBehaviour
             if (tmp == null) return;
             foreach (CameraSetupXC cameraSetupXc in tmp.CameraSetups)
             {
-                Debug.Log("Going through cameras "+cameraSetupXc.CameraMode.ToString());
+             //   Debug.Log("Going through cameras "+cameraSetupXc.CameraMode.ToString());
+#if USING_RERUN
                 if (m_Cameras.ContainsKey(cameraSetupXc.targetNumber))
                 {
                     Transform val =
                         ConnectionAndSpawning.Singleton.GetClientMainCameraObject(cameraSetupXc.ParticipantToFollow);
                     ApplyValues(cameraSetupXc, m_Cameras[cameraSetupXc.targetNumber],val);
                 }
+#endif
+
             }
                  
         }
@@ -183,7 +200,7 @@ public class SimpleServerCameraScript : MonoBehaviour
                 throw new ArgumentOutOfRangeException();
         }
     }
-
+#if USING_RERUN
     public void ApplyValues(CameraSetupXC setup, RerunCameraIdentifier target, Transform followObject = null)
     {
        
@@ -205,6 +222,8 @@ public class SimpleServerCameraScript : MonoBehaviour
 
 
     }
+#endif
+
     
 
     private void DisableMe(ulong obj)
@@ -227,10 +246,12 @@ public class SimpleServerCameraScript : MonoBehaviour
 [Serializable]
 public struct CameraSetupXC
 {
-
+#if USING_RERUN
     public RerunCameraIdentifier.CameraNumber targetNumber;
         
     public RerunCameraIdentifier.CameraFollowMode CameraMode;
+#endif
+
     public ParticipantOrder ParticipantToFollow;
     public Vector3 PositionOrOffset;
     public Vector3 RotationOrRot_Offset;

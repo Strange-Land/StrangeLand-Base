@@ -1,6 +1,10 @@
-using UltimateReplay;
+
 using Unity.Netcode;
 using UnityEngine;
+
+#if USING_RERUN 
+using UltimateReplay;
+#endif
 
 public class DisableComponents : NetworkBehaviour {
     // Start is called before the first frame update
@@ -40,12 +44,16 @@ public class DisableComponents : NetworkBehaviour {
         }
 
         if (!IsServer) {
+#if USING_RERUN 
+
             GetComponent<ReplayTransform>().enabled = false;
 
             foreach (var tf in GetComponentsInChildren<ReplayTransform>()) tf.enabled = false;
             GetComponent<ReplayObject>().enabled = false;
 
             foreach (var tf in GetComponentsInChildren<ReplayObject>()) tf.enabled = false;
+
+#endif
         }
 
         base.OnNetworkSpawn();

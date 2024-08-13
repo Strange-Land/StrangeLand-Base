@@ -2,15 +2,13 @@
 
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Rerun;
-using UltimateReplay;
 using Unity.Netcode;
 using UnityEngine;
+
 
 
 public class QNDataStorageServer : MonoBehaviour {
@@ -56,7 +54,7 @@ public class QNDataStorageServer : MonoBehaviour {
     }
 
 
-    public void StartQn(ScenarioManager sManager, RerunManager activeManager) {
+    public void StartQn(ScenarioManager sManager) {
         if (sManager == null) return;
         //gtLogger.GatherGroundTruth(ref CurrentScenarioLog);
         participantAnswerStatus = new Dictionary<ParticipantOrder, int>();
@@ -251,7 +249,7 @@ public class QNDataStorageServer : MonoBehaviour {
     }
 
 
-    public void StopScenario(RerunManager activeManager) {
+    public void StopScenario() {
         Debug.Log("Stopping Scenario and QN logger.");
         CurrentScenarioLog.Stop();
         string folderPath = DataStoragePathSupervisor.GetQNDirectory();

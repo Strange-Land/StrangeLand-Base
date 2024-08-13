@@ -1,9 +1,11 @@
+/// https://github.com/Strange-Land/StrangeLand-Base/issues/4
+
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Serialization;
-using UltimateReplay;
+
 using Unity.Netcode;
 using UnityEngine;
+
 
 [RequireComponent(typeof(BoxCollider))]
 public class TrafficLightTrigger : MonoBehaviour

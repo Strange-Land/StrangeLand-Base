@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
- using Rerun;
+
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
@@ -14,6 +14,15 @@ using UnityEngine.Rendering;
  using Pose = UnityEngine.Pose;
  using Rect = UnityEngine.Rect;
 
+#if USING_RERUN
+using Rerun;
+#endif
+
+ public struct StrangeLandSessionDetails {
+     public string sessionName;
+
+ }
+
 
  public class ConnectionAndSpawning : MonoBehaviour {
     public struct JoinParameters {
@@ -22,7 +31,7 @@ using UnityEngine.Rendering;
         public ParticipantOrder _participantOrder;
         public string _Language;
     }
-
+    
     public GameObject LocalServerCameraRig;
     public static string WaitingRoomSceneName = "WaitingRoom";
     public SO_JoinTypeToClientObject JoinTypeConfig;
@@ -72,7 +81,9 @@ using UnityEngine.Rendering;
     private string LoadedScene = "";
 
     private QNDataStorageServer m_QNDataStorageServer;
+    #if USING_RERUN
     private RerunManager m_ReRunManager;
+    #endif
     private GameObject myStateManager;
 
     //Internal StateTracking
@@ -95,6 +106,8 @@ using UnityEngine.Rendering;
     public ActionState ServerState { get; private set; }
     public JoinParameters ThisClient { private set; get; } = new JoinParameters();
 
+
+    public StrangeLandSessionDetails m_StrangeLandSessionDetails = new StrangeLandSessionDetails();
     private void Awake() {
         participants = new ParticipantOrderMapping();
         Main_ParticipantObjects = new Dictionary<ParticipantOrder, Client_Object>();
@@ -108,6 +121,7 @@ using UnityEngine.Rendering;
     private void Start() {
 //        DontDestroyOnLoad(FindObjectOfType<InputSystemUIInputModule>());
         LastLoadedVisualScene = "";
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         if (FindObjectsOfType<RerunManager>().Length > 1) {
             Debug.LogError("We found more than 1 RerunManager. This is not support. Check your Hiracy");
             Application.Quit();
@@ -118,6 +132,7 @@ using UnityEngine.Rendering;
             Debug.LogError("Did not find a ReRunManager. Need exactly 1. Quitting!");
             Application.Quit();
         }
+#endif
     }
 
     // Update is called once per frame
@@ -218,8 +233,8 @@ using UnityEngine.Rendering;
     private void SetUpToServe(string pairName) {
         Application.targetFrameRate = 72;
 
-      
-        
+
+        m_StrangeLandSessionDetails.sessionName = pairName;
         gameObject.AddComponent<SteeringWheelManager>();
         gameObject.AddComponent<farlab_logger>();
         m_QNDataStorageServer = gameObject.AddComponent<QNDataStorageServer>();
@@ -253,9 +268,10 @@ using UnityEngine.Rendering;
 
         Debug.Log(ServerCamera);
         DontDestroyOnLoad(ServerCamera);
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         m_ReRunManager.RerunInitialization(true, ServerCamera.GetComponent<RerunPlaybackCameraManager>(),
             RerunManager.StartUpMode.RECORDING);
-        
+        #endif
         DataStoragePathSupervisor.setStudyName(pairName);
 
 
@@ -268,7 +284,9 @@ using UnityEngine.Rendering;
 
     public void StartAsHost(string pairName,ParticipantOrder po, JoinType _jt,SpawnType _st) {
         SetUpToServe(pairName);
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         m_ReRunManager.RerunInitialization(true, null, RerunManager.StartUpMode.RECORDING);
+        #endif
         DataStoragePathSupervisor.setStudyName(pairName);
         JoinParameters connectionDataRequest = new JoinParameters() {
             _participantOrder = po,
@@ -396,10 +414,12 @@ using UnityEngine.Rendering;
 
             Debug.Log(ServerCamera);
             DontDestroyOnLoad(ServerCamera);
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
             m_ReRunManager.RerunInitialization(true, ServerCamera.GetComponent<RerunPlaybackCameraManager>(),
                 RerunManager.StartUpMode.REPLAY);
 
             m_ReRunManager.RegisterPreLoadHandler(LoadSceneReRun);
+#endif
         }
 
         NetworkManager.Singleton.enabled = false;
@@ -521,11 +541,11 @@ using UnityEngine.Rendering;
  //       if (m_QNDataStorageServer != null) m_QNDataStorageServer.NewDatapointfromClient(po, id, answerIndex, lang);
   //  }
 
-
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
     public RerunManager GetReRunManager() {
         return m_ReRunManager;
     }
-
+#endif
     private void ResetInteractableObject(ParticipantOrder po) {
         if (Interactable_ParticipantObjects.ContainsKey(po)) {
             foreach (Interactable_Object io in Interactable_ParticipantObjects[po]) {
@@ -908,12 +928,13 @@ using UnityEngine.Rendering;
     #region StateChangeCalls
 
     private void SwitchToWaitingRoom() {
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         if (m_ReRunManager.IsRecording()) {
             m_ReRunManager.StopRecording();
             Debug.LogWarning(
                 "I stoped Recording as I was loaded back to the Waitingroom. Recording should have stopped at the switch to the Questionnaire stage.");
         }
-
+#endif
         ServerState = ActionState.WAITINGROOM;
         ServerStateChange.Invoke(ActionState.WAITINGROOM);
 
@@ -954,17 +975,19 @@ using UnityEngine.Rendering;
 
         ServerState = ActionState.DRIVE;
         ServerStateChange.Invoke(ActionState.DRIVE);
-
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         m_ReRunManager.BeginRecording(LastLoadedScene);
         m_QNDataStorageServer.StartScenario(LastLoadedScene, m_ReRunManager.GetRecordingFolder());
-        farlab_logger.Instance.StartRecording(m_ReRunManager, LastLoadedScene, m_ReRunManager.GetRecordingFolder());
+#endif
+        farlab_logger.Instance.StartRecording(LastLoadedScene,m_StrangeLandSessionDetails.sessionName);
     }
 
 
     public void SwitchToQN() {
         Debug.Log("Stopping Driving and Stopping the recording.");
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/1
         m_ReRunManager.StopRecording();
-
+#endif
         ServerState = ActionState.QUESTIONS;
         ServerStateChange.Invoke(ActionState.QUESTIONS);
 
@@ -985,7 +1008,7 @@ using UnityEngine.Rendering;
 
         }
 
-        m_QNDataStorageServer.StartQn(GetScenarioManager(), m_ReRunManager);
+        m_QNDataStorageServer.StartQn(GetScenarioManager());
         StartCoroutine(farlab_logger.Instance.StopRecording());
     }
 
@@ -995,7 +1018,7 @@ using UnityEngine.Rendering;
     }
 
     private void SwitchToPostQN() {
-        m_QNDataStorageServer.StopScenario(m_ReRunManager);
+        m_QNDataStorageServer.StopScenario();
         if (farlab_logger.Instance.isRecording()) StartCoroutine(farlab_logger.Instance.StopRecording());
         ServerState = ActionState.POSTQUESTIONS;
         ServerStateChange.Invoke(ActionState.POSTQUESTIONS);

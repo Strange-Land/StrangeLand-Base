@@ -1,14 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using UltimateReplay;
+
 using UnityEngine;
 
-public class VehicleAudioReplay : ReplayBehaviour
-{
-    private VehicleAudio _vehicleAudio;
+#if USING_RERUN 
+using UltimateReplay;
+#endif
 
+public class VehicleAudioReplay : 
+#if USING_RERUN 
+    ReplayBehaviour
+#else
+ MonoBehaviour
+#endif
+{
+    
+#if USING_RERUN 
+    private VehicleAudio _vehicleAudio;
     private VehicleAudioController _vehicleAudioController;
     private NetworkVehicleController _networkVehicleController;
+    
     [ReplayVar(false)] public bool IsShifting;
     [ReplayVar(true)] public float accellInput;
     [ReplayVar(true)] public float RPM;
@@ -18,10 +29,7 @@ public class VehicleAudioReplay : ReplayBehaviour
     [ReplayVar(false)] public int CurrentSurface;
 
     private float load = 0f;
-
     private RoadSurface lastSurface = RoadSurface.Airborne;
-
-
     private AudioSource HonkSound;
 
     // Start is called before the first frame update
@@ -94,4 +102,5 @@ public class VehicleAudioReplay : ReplayBehaviour
             _vehicleAudioController.windAudio.speed = CurrentSpeed;
         }
     }
+#endif
 }

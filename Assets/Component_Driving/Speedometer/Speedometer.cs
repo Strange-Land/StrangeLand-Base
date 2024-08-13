@@ -1,13 +1,32 @@
 using TMPro;
-using UltimateReplay;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Speedometer : ReplayBehaviour {
-    [ReplayVar(false)] public bool isMPH = true;
+#if USING_RERUN
+using UltimateReplay;
+#endif
+
+public class Speedometer : 
+    
+#if USING_RERUN
+    ReplayBehaviour 
+#else
+MonoBehaviour
+#endif
+
+{
+#if USING_RERUN
+    [ReplayVar(false)] 
+#endif
+    public bool isMPH = true;
 
     public GameObject speedText;
-    [ReplayVar(false)] public float mySpeed;
+#if USING_RERUN
+    [ReplayVar(false)]
+#endif 
+public float mySpeed;
+
     public GameObject speedPointer;
     private float OriginalRotation;
     private RectTransform speedPointerTransform;

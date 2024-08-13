@@ -1,25 +1,40 @@
+
+/// https://github.com/Strange-Land/StrangeLand-Base/issues/3
+/// https://github.com/Strange-Land/StrangeLand-Base/issues/5
+/// 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rerun;
+
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if USING_RERUN
+using Rerun;
+#endif
 
+#if USING_RERUN
 [RequireComponent(typeof(RerunPlaybackCameraManager))]
+#endif
+
+
 public class OberserverCamera_ClientObject : Client_Object {
     private ParticipantOrder m_ParticipantOrder;
     private SpawnType spawnType;
     private Interactable_Object MyInteractableObject;
     private ulong targetClient;
 
-
+#if USING_RERUN
     private RerunPlaybackCameraManager _RerunCameraManager;
+#endif
 
     // Start is called before the first frame update
     void Start() {
+#if USING_RERUN
         _RerunCameraManager = GetComponent<RerunPlaybackCameraManager>();
+#endif
+
         Debug.Log("ObserverCamera Manger ");
         ConnectionAndSpawning.Singleton.ServerStateChange += CameraUpdateStateTracker;
         
@@ -85,11 +100,17 @@ public class OberserverCamera_ClientObject : Client_Object {
     }
 
     private void DelinkCameras() {
+#if USING_RERUN
         _RerunCameraManager.DeLinkCameras();
+#endif
+
     }
 
     private void LinkCameras() {
+#if USING_RERUN
         _RerunCameraManager.LinkCameras();
+#endif
+
     }
 
     public override void OnNetworkSpawn() {
@@ -125,7 +146,13 @@ public class OberserverCamera_ClientObject : Client_Object {
     }
 
     public override Transform GetMainCamera() {
+#if USING_RERUN
         return _RerunCameraManager.GetFollowCamera();
+#else
+        return null;
+
+#endif
+
     }
 
     public override void CalibrateClient(Action<bool> finishedCalibration) {

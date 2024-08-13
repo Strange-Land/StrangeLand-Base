@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UltimateReplay;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -13,6 +12,10 @@ using UnityEngine.XR.Hands;
 using UnityEngine.XR.Interaction.Toolkit;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
+
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/2
+using UltimateReplay;
+#endif
 
 public class VR_Participant : Client_Object {
     private const string OffsetFileName = "offset";
@@ -151,9 +154,11 @@ public class VR_Participant : Client_Object {
             // rigidbody.isKinematic = true;
         }
         else {
+#if USING_RERUN //https://github.com/Strange-Land/StrangeLand-Base/issues/2
             foreach (var a in
                      GetComponentsInChildren<ReplayTransform>())
                 a.enabled = false; // should happen twice to activate the hand
+#endif
         }
     }
 

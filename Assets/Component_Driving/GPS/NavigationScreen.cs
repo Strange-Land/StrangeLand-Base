@@ -1,9 +1,19 @@
-﻿using UltimateReplay;
-using Unity.Netcode;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NavigationScreen : ReplayBehaviour {
+#if USING_RERUN
+using UltimateReplay;
+#endif
+public class NavigationScreen :
+    
+#if USING_RERUN
+    ReplayBehaviour 
+#else
+MonoBehaviour
+#endif 
+
+{
     public enum Direction {
         Straight,
         Left,
@@ -29,8 +39,10 @@ public class NavigationScreen : ReplayBehaviour {
         staircase,
         stairs_across_street
     }
-
-    [ReplayVar(false)] public int recordingDirection = (int)Direction.None;
+#if USING_RERUN
+    [ReplayVar(false)] 
+#endif
+public int recordingDirection = (int)Direction.None;
 
 
     public Sprite straightImage,

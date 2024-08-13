@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using Rerun;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Hands;
@@ -198,7 +196,7 @@ public class farlab_logger : MonoBehaviour {
 
     private List<LogItem> logItems;
 
-    public void StartRecording(RerunManager activeManager, string ScenarioName, string sessionName) {
+    public void StartRecording(string ScenarioName, string sessionName) {
         var folderpath = DataStoragePathSupervisor.GetCsvDirectory();
         Directory.CreateDirectory(folderpath);
         path = Path.Join(folderpath,

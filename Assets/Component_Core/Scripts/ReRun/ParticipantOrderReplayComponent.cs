@@ -1,25 +1,31 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Rerun;
+using Unity.Netcode;
 using UnityEngine;
+
+#if USING_RERUN
+using Rerun;
 using UltimateReplay;
 using UltimateReplay.Core;
 using UltimateReplay.Serializers;
-using Unity.Netcode;
+#endif
+
 
 //[DisallowMultipleComponent]
 //[ReplaySerializer(typeof(ParticipantOrderReplayComponentSerializer))]
-public class ParticipantOrderReplayComponent : ReplayRecordableBehaviour
+public class ParticipantOrderReplayComponent :
+    
+#if USING_RERUN
+    ReplayRecordableBehaviour
+#else
+MonoBehaviour
+#endif
 {
     public ParticipantOrder m_participantOrder;
 
     private bool first = true;
 
-
-
-
     public static IList<ParticipantOrderReplayComponent> AllComponents;
+#if USING_RERUN
     public override void Awake()
     {
         base.Awake();
@@ -71,17 +77,7 @@ public class ParticipantOrderReplayComponent : ReplayRecordableBehaviour
             }
         }
     }
-
-    private void LateUpdate()
-    {
-        if (ConnectionAndSpawning.Singleton.ServerState != ActionState.DRIVE)
-        {
-            first = true;
-        }
-    }
-
-
-    public override void OnReplaySerialize(ReplayState state)
+        public override void OnReplaySerialize(ReplayState state)
     {
       
         state.Write((char) m_participantOrder);
@@ -93,6 +89,18 @@ public class ParticipantOrderReplayComponent : ReplayRecordableBehaviour
        
         m_participantOrder = (ParticipantOrder) (char) state.ReadByte();
     }
+
+    
+#endif
+    private void LateUpdate()
+    {
+        if (ConnectionAndSpawning.Singleton.ServerState != ActionState.DRIVE)
+        {
+            first = true;
+        }
+    }
+
+
 
 
     public void SetParticipantOrder(ParticipantOrder po)
@@ -112,31 +120,3 @@ public class ParticipantOrderReplayComponent : ReplayRecordableBehaviour
         return (char) m_participantOrder;
     }
 }
-
-/*
-public class ParticipantOrderReplayComponentSerializer : IReplaySerialize
-{
-    public ParticipantOrder po;
-
-    public void OnReplaySerialize(ReplayState state)
-    {
-        state.Write((char) po);
-    }
-
-
-    public void OnReplayDeserialize(ReplayState state)
-    {
-        po = (ParticipantOrder) (char) state.ReadByte();
-    }
-
-    public static ParticipantOrderReplayComponentSerializer DeserializeReplayState(ReplayState state)
-    {
-        // Create a serializer
-        ParticipantOrderReplayComponentSerializer serializer = new ParticipantOrderReplayComponentSerializer();
-
-        // Try to deserialize
-        serializer.OnReplayDeserialize(state);
-
-        return serializer;
-    }
-}*/
