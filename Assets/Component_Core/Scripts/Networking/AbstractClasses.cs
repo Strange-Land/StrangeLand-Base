@@ -5,6 +5,21 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public abstract class Interactable_Object : NetworkBehaviour {
 
     public NetworkVariable<ParticipantOrder> m_participantOrder = new NetworkVariable<ParticipantOrder>();
