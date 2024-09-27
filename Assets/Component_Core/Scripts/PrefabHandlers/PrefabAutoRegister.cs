@@ -13,44 +13,44 @@ public static class StaticPrefabAutoRegister {
     }
 
     private static void RegisterJoinTypePrefabs() {
-        var joinTypeClasses = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(JoinTypePrefabAttribute), false).Length > 0);
+        // var joinTypeClasses = Assembly.GetExecutingAssembly()
+        //     .GetTypes()
+        //     .Where(t => t.GetCustomAttributes(typeof(JoinTypePrefabAttribute), false).Length > 0);
 
-        foreach (var type in joinTypeClasses) {
-            var attribute = (JoinTypePrefabAttribute)type.GetCustomAttributes(typeof(JoinTypePrefabAttribute), false).FirstOrDefault();
-            if (attribute != null) {
-                // Find a prefab with the same name as the class
-                var prefab = FindPrefabWithClassName(type.Name);
-                if (prefab != null) {
-                    // Assign the prefab to your static dictionary or a ScriptableObject
-                    // This example assumes a static dictionary in a Manager class
-                    PrefabManager.RegisterJoinTypePrefab(attribute.TypeName, prefab);
-                } else {
-                    Debug.LogWarning($"No prefab found matching class name: {type.Name}");
-                }
-            }
-        }
+        // foreach (var type in joinTypeClasses) {
+        //     var attribute = (JoinTypePrefabAttribute)type.GetCustomAttributes(typeof(JoinTypePrefabAttribute), false).FirstOrDefault();
+        //     if (attribute != null) {
+        //         // Find a prefab with the same name as the class
+        //         var prefab = FindPrefabWithClassName(type.Name);
+        //         if (prefab != null) {
+        //             // Assign the prefab to your static dictionary or a ScriptableObject
+        //             // This example assumes a static dictionary in a Manager class
+        //             PrefabManager.RegisterJoinTypePrefab(attribute.TypeName, prefab);
+        //         } else {
+        //             Debug.LogWarning($"No prefab found matching class name: {type.Name}");
+        //         }
+        //     }
+        // }
     }
 
     private static void RegisterSpawnTypePrefabs() {
-        var spawnTypeClasses = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(SpawnTypePrefabAttribute), false).Length > 0);
+        // var spawnTypeClasses = Assembly.GetExecutingAssembly()
+        //     .GetTypes()
+        //     .Where(t => t.GetCustomAttributes(typeof(SpawnTypePrefabAttribute), false).Length > 0);
 
-        foreach (var type in spawnTypeClasses) {
-            var attribute = (SpawnTypePrefabAttribute)type.GetCustomAttributes(typeof(SpawnTypePrefabAttribute), false).FirstOrDefault();
-            if (attribute != null) {
-                // Find a prefab with the same name as the class
-                var prefab = FindPrefabWithClassName(type.Name);
-                if (prefab != null) {
-                    // Assign the prefab to your static dictionary or a ScriptableObject
-                    PrefabManager.RegisterSpawnTypePrefab(attribute.TypeName, prefab);
-                } else {
-                    Debug.LogWarning($"No prefab found matching class name: {type.Name}");
-                }
-            }
-        }
+        // foreach (var type in spawnTypeClasses) {
+        //     var attribute = (SpawnTypePrefabAttribute)type.GetCustomAttributes(typeof(SpawnTypePrefabAttribute), false).FirstOrDefault();
+        //     if (attribute != null) {
+        //         // Find a prefab with the same name as the class
+        //         var prefab = FindPrefabWithClassName(type.Name);
+        //         if (prefab != null) {
+        //             // Assign the prefab to your static dictionary or a ScriptableObject
+        //             PrefabManager.RegisterSpawnTypePrefab(attribute.TypeName, prefab);
+        //         } else {
+        //             Debug.LogWarning($"No prefab found matching class name: {type.Name}");
+        //         }
+        //     }
+        // }
     }
 
     private static GameObject FindPrefabWithClassName(string className) {
