@@ -7,17 +7,6 @@ The updated version of CrossCulturalDriving uses [Netcode for GameObject](https:
 ## Notes
 These notes concern the simulator in development and are subject to change. The standard operating procedure is documented on Google Docs/Overleaf. Ask Hauke Sandhaus or David Goeddicke for access. 
 
-## Setup for development
-Git: 
-Once you pulled the repository you need to initialize the submodule ReRun:
-`git submodule update --init --recursive`
-
-Unity:
-import the necessary third party packages:
-[Ultimate Replay](https://assetstore.unity.com/packages/tools/camera/ultimate-replay-2-0-178602)
-[Runtime File Browser](https://assetstore.unity.com/packages/tools/gui/runtime-file-browser-113006)
-[Oculus Integration](https://developer.oculus.com/downloads/package/unity-integration)
-
 ### What to keep in mind while developing a scenario
 The individual scenarios need to contain the ScenarioManager prefab. SpawnPoints denote the starting positions of the participants. Trigger Boxes are the end zones of the scenario and start of the questionnaire. 
 RoadNetworks can be built with theEasyRoads3D assets. The networked traffic light prefab will change the status for all participants at once. 
