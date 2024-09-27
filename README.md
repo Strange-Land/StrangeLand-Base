@@ -1,8 +1,8 @@
 # CrossCulturalDriving
 
-The version of the simulator used for the article: [Strangers in a Strange Land: New Experimental System for Understanding Driving Culture Using VR](https://ieeexplore.ieee.org/document/9720119) can be found under the [`main-OculusCV1`](https://github.com/FAR-Lab/CrossCulturalDriving/tree/main-OculusCV1) branch.
+The version of the simulator used for the article: [Strangers in a Strange Land: New Experimental System for Understanding Driving Culture Using VR](https://ieeexplore.ieee.org/document/9720119) can be found under the [`main-OculusCV1`](https://github.com/FAR-Lab/CrossCulturalDriving/tree/main-OculusCV1) branch. Please pull the development branch (default branch) if you want to test out the current state of the system.
 
-Updated version of CrossCulturalDriving ~~including ECS~~, new networking stack(MLAPI), ~~Unity.InputSystem~~, and ~~Unity XR Interaction Toolkit~~ with Oculus Plugin alongside Oculus Integration, works with Logitech G29 steering wheel. The visual scene is rendered on the standalone headsets. They connect wirelessly to the server which manages the scenario progression, questionnaire and data logging. 
+The updated version of CrossCulturalDriving uses [Netcode for GameObject](https://github.com/Strange-Land/StrangeLand-Base.git) as the networking solution, along with the Oculus Plugin and Oculus Integration. It is compatible with the Logitech G29 steering wheel. The visual scene is rendered on standalone headsets, which connect wirelessly to a server that manages scenario progression, questionnaires, and data logging.
 
 ## Notes
 These notes concern the simulator in development and are subject to change. The standard operating procedure is documented on Google Docs/Overleaf. Ask Hauke Sandhaus or David Goeddicke for access. 
